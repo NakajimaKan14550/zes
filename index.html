@@ -116,27 +116,30 @@
             border-top: 3px solid var(--accent-color);
         }
 
-        /* Image Zoom Styles */
+        /* Image Styles & Zoom */
+        .img-box {
+            margin: 30px 0;
+            text-align: center;
+        }
+
         img {
             max-width: 100%;
             height: auto;
             border-radius: 4px;
             cursor: zoom-in;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
             display: block;
-            margin: 20px auto;
+            margin: 0 auto;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
         }
 
-        .img-container {
-            position: relative;
-        }
-
-        /* JS Zoomed Class */
         .zoomed {
             position: fixed;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(1.5);
+            transform: translate(-50%, -50%) scale(1.1);
+            max-width: 90vw;
+            max-height: 90vh;
             z-index: 1000;
             cursor: zoom-out;
             box-shadow: 0 0 100px rgba(0,0,0,0.5);
@@ -149,7 +152,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(9, 26, 45, 0.85);
+            background: rgba(9, 26, 45, 0.9);
             z-index: 999;
         }
 
@@ -176,6 +179,7 @@
             .hero h1 { font-size: 1.8rem; }
             section { padding: 20px; }
             .grid { grid-template-columns: 1fr; }
+            .zoomed { transform: translate(-50%, -50%) scale(1); width: 95vw; }
         }
     </style>
 </head>
@@ -191,7 +195,7 @@
         <div class="hero-content">
             <img src="logo.png" alt="Brand Logo" class="hero-logo">
             <h1>ZES：COTS品の宇宙・産業グレードへの転用技術</h1>
-            <p>高エネルギー環境下における半導体デバイスの物理的保護と信頼性確保の論理的解法</p>
+            <p>高エネルギー環境下における半導体デバイスの物理的保護と信頼性確保の論理解法</p>
         </div>
     </div>
 
@@ -200,88 +204,96 @@
         <section id="background">
             <h2>【背景・課題】高密度半導体における物理的限界</h2>
             <p>
-                半導体プロセスの微細化（ナノメートル単位）に伴い、地上および宇宙空間における放射線影響が無視できない課題となっている。特に、最新のAIチップや高密度FPGAは、物理的な構造上、放射線に起因する以下のリスクを抱えている。
+                半導体プロセスの微細化に伴い、最新のAIチップや高密度FPGAは放射線による物理的故障リスクが急増しています。特に以下の2点は深刻な機能不全を招きます。
             </p>
+            <div class="img-box">
+                <img src="zes3.png" alt="背景・課題：物理的限界の解説図">
+            </div>
             <div class="grid">
                 <div class="card">
                     <h3>ソフトエラー (SEU)</h3>
-                    <p>放射線がIC内部の論理素子に衝突し、保持データが反転する現象。計算精度の低下やシステムの予期せぬ挙動を招く。</p>
+                    <p>放射線粒子が論理素子に衝突し、データが反転。計算精度の低下や予期せぬ挙動を誘発します。</p>
                 </div>
                 <div class="card">
                     <h3>ラッチアップ (SEL)</h3>
-                    <p>放射線（重イオン等）により寄生回路が形成され、短絡状態となる現象。過電流によりデバイスが物理的に焼損し、回復不能な損傷を与える。</p>
+                    <p>重イオン等により寄生回路が形成され、短絡状態に。過電流によりデバイスを物理的に焼損させます。</p>
                 </div>
             </div>
-            <p style="margin-top:20px;">
-                従来、これらへの対策は「宇宙専用品（Rad-Hard）」の使用が一般的であったが、高コストかつ開発サイクルが遅いという課題があった。民生品（COTS）を過酷な環境で運用するための技術的ブレイクスルーが求められている。
-            </p>
-            
         </section>
 
         <section id="solution">
             <h2>【解決策】ZESの核心技術原理</h2>
             <p>
-                シンガポール国立大学発のZES（Zero Error Systems）は、安価なCOTS品を「宇宙グレード」に引き上げるための保護技術を実装している。
+                シンガポール国立大学発のZES（Zero Error Systems）は、安価な民生品（COTS）の性能を活かしつつ、放射線耐性を物理・論理の両面から補強します。
             </p>
+            <div class="img-box">
+                <img src="zes2.png" alt="ZES核心技術原理：LDAP, LCL, TMR, POL">
+            </div>
 
-            <h3>1. LDAP (Latch-up Detection And Protection)</h3>
+            <div class="grid">
+                <div class="card">
+                    <h3>1. LDAP</h3>
+                    <p>ラッチアップをμs単位で検知・遮断。焼損前に電源をリセットし、物理的破壊を防ぎます。</p>
+                </div>
+                <div class="card">
+                    <h3>2. LCL</h3>
+                    <p>系統故障を防止するスマート遮断器。異常箇所のみを制限し、システム全体のダウンを回避します。</p>
+                </div>
+                <div class="card">
+                    <h3>3. TMR</h3>
+                    <p>三重冗長系によるデータ整合性。3回路の多数決判定により、ソフトエラーの影響を無効化します。</p>
+                </div>
+                <div class="card">
+                    <h3>4. POL</h3>
+                    <p>デバイス直近での高精度給電。電圧降下やノイズを最小化し、クリーンな電力を供給します。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture">
+            <h2>【信頼性設計】ZES保護アーキテクチャ</h2>
             <p>
-                過電流による物理的破壊からの保護を目的とする。放射線によるラッチアップ発生時の「わずかな異常電流の立ち上がり」をマイクロ秒（μs）単位で検知。ICが焼損する前に電源を遮断し、再起動（パワーサイクリング）を行うことで物理状態を正常にリセットする。
+                ZESの各コンポーネントを組み合わせることで、電源の信頼性（SEL対策）とデータの完全性（SEU対策）を両立する包括的な保護システムを構築します。
             </p>
-
-            <h3>2. LCL (Latching Current Limiter)</h3>
+            <div class="img-box">
+                <img src="zes.png" alt="COTS Payload protected by ZES Architecture">
+            </div>
             <p>
-                電力系統の波及故障を防ぐ「スマート遮断器」。過負荷発生時、即座に遮断するのではなく一定時間電流を制限し、異常が継続する場合のみ切り離す。これにより、一箇所の故障によるシステム全体のダウン（共倒れ）を防止する。
-            </p>
-
-            <h3>3. TMR (Triple Modular Redundancy)</h3>
-            <p>
-                データの整合性を確保するための「三重系冗長」技術。同一の演算を3つの回路で同時に実施し、その結果を多数決（Voter）で判定する。1つの回路でソフトエラーが発生しても、残りの2つが正常であればシステム全体の出力は正しく保たれる。
-            </p>
-            
-
-            <h3>4. POL (Point of Load)</h3>
-            <p>
-                デバイス直近での高精度給電。配線による電圧降下やノイズを最小化し、高速センサーやSSDが必要とする安定した電圧を供給する。
+                この構成により、高価な宇宙専用品（Rad-Hard）を使用することなく、高性能なGPUやFPGAをミッションクリティカルな環境で運用可能になります。
             </p>
         </section>
 
         <section id="impact">
             <h2>【産業的インパクト】ミッションクリティカルな領域への展開</h2>
-            <p>
-                ZESの技術は、宇宙機のみならず、高い信頼性が要求される地上産業においても決定的な優位性を提供する。
-            </p>
-
             <table>
                 <thead>
                     <tr>
                         <th>技術要素</th>
-                        <th>データセンター (DC) / AIサーバー</th>
+                        <th>データセンター / AIサーバー</th>
                         <th>自動車・自動運転</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><strong>LDAP</strong></td>
-                        <td>高価なGPU（NVIDIA等）の焼損防止</td>
-                        <td>制御コンピュータの物理的安全確保</td>
+                        <td>高価なGPUの焼損防止</td>
+                        <td>制御コンピュータの物理的安全</td>
                     </tr>
                     <tr>
                         <td><strong>LCL</strong></td>
-                        <td>サーバーユニット間での故障波及防止</td>
-                        <td>電源系統の冗長性と独立性維持</td>
+                        <td>ユニット間の故障波及防止</td>
+                        <td>電源系統の独立性維持</td>
                     </tr>
                     <tr>
                         <td><strong>TMR</strong></td>
-                        <td>AI学習・金融演算のエラー自動修正</td>
-                        <td>センサー情報の信頼性確保（多数決）</td>
+                        <td>金融演算等のエラー自動修正</td>
+                        <td>センサー情報の多数決判定</td>
                     </tr>
                 </tbody>
             </table>
-
-            <h3>九州工業大学との連携による実証</h3>
+            <h3>九州工業大学との実証連携</h3>
             <p>
-                超小型衛星の研究拠点である九州工業大学（Kyutech）の衛星プロジェクトにおいて、ZESのデバイスは実証されている。このトップアカデミアによる検証実績は、産業用ユーザーにおける「民生品ベースでの宇宙レベルの安全性」の構築を強力に後押しするものである。
+                超小型衛星の研究拠点である九州工業大学の衛星プロジェクトにおいて、ZESデバイスの実証実績を積み重ねており、アカデミアと産業界の両面から信頼性を担保しています。
             </p>
         </section>
 
@@ -314,14 +326,14 @@
             const overlay = document.getElementById('overlay');
 
             images.forEach(img => {
-                // ナビゲーションのロゴなどは拡大対象外にする（必要に応じて）
+                // ロゴ等は拡大対象から除外
                 if (img.classList.contains('logo') || img.classList.contains('hero-logo')) return;
 
                 img.addEventListener('click', () => {
                     img.classList.toggle('zoomed');
                     if (img.classList.contains('zoomed')) {
                         overlay.style.display = 'block';
-                        document.body.style.overflow = 'hidden'; // スクロール禁止
+                        document.body.style.overflow = 'hidden';
                     } else {
                         overlay.style.display = 'none';
                         document.body.style.overflow = 'auto';
@@ -329,7 +341,6 @@
                 });
             });
 
-            // オーバーレイクリックで解除
             overlay.addEventListener('click', () => {
                 const zoomedImg = document.querySelector('.zoomed');
                 if (zoomedImg) {
